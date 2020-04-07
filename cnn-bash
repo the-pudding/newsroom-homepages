@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for file in *.png
+do
+  convert $file -density 300 -colorspace Gray -level 40%,85% -alpha remove $file
+  tesseract $file $file-output -l eng --psm 11
+done
+
+echo ALL done
