@@ -8,13 +8,18 @@ dfs = []
 
 for file in os.listdir("/Applications/MAMP/htdocs/newsroom-homepages/"):
     if file.endswith(".tsv"):
-        print file
         df = pd.read_csv(file,delimiter='\t', quoting=csv.QUOTE_NONE, encoding='utf-8')
         df['date_of_screenshot'] = file.replace(".tsv","").replace(".jpeg-output","")
         df = df[df.text.notnull()]
         dfs.append(df)
 merge = pd.concat(dfs)
-print merge
+
+merge['text'] = merge['text'].str.replace('[^\w\s]','').str.lower()
+merge = merge[merge['text'].isin(["coronavirus","covid","covid-19","covid19"])]
+
+counts = merge.groupby(['date_of_screenshot'])['text'].agg('count')
+counts.to_csv (r'counts.csv', index = True, header=True,encoding='utf-8')
+
 
 
 
