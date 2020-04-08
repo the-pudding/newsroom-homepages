@@ -3,7 +3,7 @@
 for file in *.jpeg
 do
   convert $file -density 300 -colorspace Gray -level 40%,85% -alpha remove $file
-  tesseract $file $file-output -l eng tsv --psm 11
+  tesseract $file $file-output -l eng --psm 11 tsv
 done
 
 echo ALL done
